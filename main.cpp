@@ -67,6 +67,7 @@ void parse_instruction(std::string temp, std::ofstream &ofs, Hashmap* map)
 	bool didWork;
 	std::stringstream ss(temp);
 	if (!(ss >> command)) { return; } // get command, but if string was empty, return
+  //std::cout << command << std::endl;
 	if (command == "insert") { // command to insert key/value pair
 		ss >> key >> value;
 		map->insert(key, value); // add key/value pair to map

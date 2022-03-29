@@ -8,8 +8,11 @@
 #include <sstream>
 #include <iostream>
 #include <queue>
+#include <cmath>
+#include <vector>
 #include "HashmapInterface.h"
-#define BUCKETS 10
+#include "LinkedList.h"
+#include "Node.h"
 
 using namespace std;
 
@@ -17,32 +20,10 @@ class Hashmap: public HashmapInterface
 {
 private:
 	/*
-	 * Node struct for bucket chaining
-	 * Nodes make a doubly-linked list where each buckets[i] is a head pointer
+	 * Number of nodes (key/value pairs) in map
 	 */
-	struct Node
-	{
-		string key;
-		int value;
-		Node* prev;
-		Node* next;
-	};
 
-	/*
-	 * Compare struct to be used for sorting nodes
-	 * Nodes with different values should sort by greater values first
-	 * Nodes with the same values should sort alphabetically (a-z) by key
-	 */
-	struct NodeCompare
-	{
-		bool operator()(Node* a, Node* b)
-		{
-			if(a->value != b->value)
-				return a->value < b->value;
-			else
-				return a->key > b->key;
-		}
-	};
+	int mapSize;
 
 	/*
 	 * Array of linked lists used for bucket chaining
@@ -51,12 +32,8 @@ private:
 	 * The first Node* placed in a bucket becomes the head pointer of a doubly-linked list
 	 * There is no tail pointer
 	 */
-	Node* buckets[BUCKETS];
-
-	/*
-	 * Number of nodes (key/value pairs) in map
-	 */
-	int mapSize;
+	std::vector<LinkedList*> buckets;
+  
 
 	/*
 	 * Return a hash code (bucket index) for a given key
@@ -65,6 +42,8 @@ private:
 	 *  Try to make your hash function so that the distribution is uniform over all buckets
 	 */
 	unsigned int hash(string key) const;
+
+  //void balance();
 public:
 	Hashmap();
 	~Hashmap();
